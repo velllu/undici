@@ -4,9 +4,8 @@ use undici::x11::{
 
 fn main() {
     #[cfg(debug_assertions)]
-    let display = Display::new_virtual(800, 800).expect("could not open display");
+    std::env::set_var("DISPLAY", ":90");
 
-    #[cfg(not(debug_assertions))]
     let display = Display::new().expect("could not open display");
 
     let root_window = display.get_root_window();
@@ -19,8 +18,12 @@ fn main() {
         let event = display.get_event();
 
         match event.type_ {
-            EventType::KeyPress(key_event) => {
-                println!("Pressed key: {}", key_event.key)
+            EventType::KeyPress(_key_event) => {
+                if let Some(_window) = event.subwindow {
+                    // This will only happen if the key is pressed inside a Window, and
+                    // not the root window in general
+                    println!("Return was pressed inside a window!");
+                }
             }
 
             EventType::KeyRelease(key_event) => {

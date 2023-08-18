@@ -1,4 +1,4 @@
-use std::{env, process::Command, ptr::null, time::Duration};
+use std::ptr::null;
 
 use super::{errors::DisplayError, window::Window};
 use x11::xlib::{XCloseDisplay, XDefaultRootWindow, XOpenDisplay, _XDisplay};
@@ -18,8 +18,7 @@ fn new_display() -> Result<Display, DisplayError> {
 }
 
 impl Display {
-    /// Connects to the Display, this is meant to be used when `--release` is active, for
-    /// dev porpuses use the `new_virtual()` function
+    /// Connects to the Display.
     /// # Examples
     /// ```
     /// use undici::x11::display::Display;
@@ -28,40 +27,6 @@ impl Display {
     ///     .expect("Hopefully there are no errors!");
     /// ```
     pub fn new() -> Result<Self, DisplayError> {
-        new_display()
-    }
-
-    /// Connects to a new Display on a virtual X11 session using the Xephyr command (which
-    /// should be already installed on every linux distro), this is made to be used for
-    /// fast debugging, when using `--release`, I suggest to use the standard `new()`
-    /// function
-    /// # Examples
-    /// ```no_run
-    /// use undici::x11::display::Display;
-    ///
-    /// let display = Display::new_virtual(800, 800)
-    ///     .expect("Hopefully there are no errors!");
-    /// ```
-    pub fn new_virtual(width: u32, height: u32) -> Result<Self, DisplayError> {
-        std::thread::spawn(move || {
-            Command::new("Xephyr")
-                .args([
-                    "-br",
-                    "-ac",
-                    "-noreset",
-                    "-screen",
-                    &format!("{}x{}", width, height),
-                    ":90",
-                ])
-                .spawn()
-                .unwrap();
-        });
-
-        // This does not wait to look like I am doing something much more complex, we need
-        // to wait because DISPLAY must be set after xephyr starts
-        std::thread::sleep(Duration::from_millis(100));
-        env::set_var("DISPLAY", ":90");
-
         new_display()
     }
 
@@ -91,8 +56,6 @@ impl Display {
 
 impl Drop for Display {
     fn drop(&mut self) {
-        unsafe {
-            XCloseDisplay(self.display);
-        }
+        unsafe { XCloseDisplay(self.display) };
     }
 }
