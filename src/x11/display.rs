@@ -42,7 +42,7 @@ impl Display {
     /// let root_window = display.get_root_window();
     /// ```
     /// # Panics
-    /// WARNING: This **cannot** be chained with `.new()` and `.new_virtual()` methods!
+    /// WARNING: This **cannot** be chained with `.new()`
     /// Because it needs the display to be alive!
     pub fn get_root_window(&self) -> Window {
         let root_window_id = unsafe { XDefaultRootWindow(self.display) };

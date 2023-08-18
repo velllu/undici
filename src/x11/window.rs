@@ -85,9 +85,3 @@ impl From<XWindowAttributes> for WindowData {
         }
     }
 }
-
-impl Drop for Window {
-    fn drop(&mut self) {
-        unsafe { XDestroyWindow(self.display, self.id) };
-    }
-}
