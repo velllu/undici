@@ -48,6 +48,10 @@ fn main() {
                 start = Some(mouse_event)
             }
 
+            EventType::MouseButtonRelease(_mouse_event) => {
+                start = None;
+            }
+
             EventType::MotionNotify(motion_event) => {
                 if let (Some(start), Some(window), Some(attributes)) =
                     (&start, &event.subwindow, &attributes)
@@ -55,10 +59,19 @@ fn main() {
                     let x_diff = motion_event.root_position.x - start.root_position.x;
                     let y_diff = motion_event.root_position.y - start.root_position.y;
 
-                    window.set_position(Vector2::new(
-                        attributes.position.x + x_diff,
-                        attributes.position.y + y_diff,
-                    ));
+                    match start.button {
+                        MouseButton::Left => window.set_position(Vector2::new(
+                            attributes.position.x + x_diff,
+                            attributes.position.y + y_diff,
+                        )),
+
+                        MouseButton::Right => window.set_scale(Vector2::new(
+                            (attributes.scale.x + x_diff) as u32,
+                            (attributes.scale.y + y_diff) as u32,
+                        )),
+
+                        _ => {}
+                    }
                 }
             }
 

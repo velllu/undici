@@ -14,7 +14,7 @@ pub enum Modifier {
 
 pub struct WindowData {
     pub position: Vector2<i32>,
-    pub size: Vector2<i32>,
+    pub scale: Vector2<i32>,
 }
 
 /// We need a default window attributes const because the XGetWindowAttributes requires a
@@ -85,6 +85,10 @@ impl Window {
         unsafe { XMoveWindow(self.display, self.id, position.x, position.y) };
     }
 
+    pub fn set_scale(&self, scale: Vector2<u32>) {
+        unsafe { XResizeWindow(self.display, self.id, scale.x, scale.y) };
+    }
+
     /// Makes window go on top of all other windows. If you are searching for the opposite
     /// thing, see the `lower()` function
     pub fn raise(&self) {
@@ -102,7 +106,7 @@ impl From<XWindowAttributes> for WindowData {
     fn from(attributes: XWindowAttributes) -> Self {
         WindowData {
             position: Vector2::new(attributes.x, attributes.y),
-            size: Vector2::new(attributes.width, attributes.height),
+            scale: Vector2::new(attributes.width, attributes.height),
         }
     }
 }

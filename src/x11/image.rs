@@ -60,8 +60,8 @@ impl Window {
                 self.id,
                 0,
                 0,
-                window_data.size.x as u32,
-                window_data.size.y as u32,
+                window_data.scale.x as u32,
+                window_data.scale.y as u32,
                 XAllPlanes(),
                 ZPixmap,
             )
@@ -69,8 +69,8 @@ impl Window {
 
         Image {
             image,
-            width: window_data.size.x as u32,
-            height: window_data.size.y as u32,
+            width: window_data.scale.x as u32,
+            height: window_data.scale.y as u32,
         }
     }
 }
