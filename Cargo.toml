@@ -5,8 +5,8 @@ edition = "2021"
 license = "GPL-3.0"
 authors = ["Vellu"]
 description = "X11 safe bindings made exclusively for my own personal projects"
-homepage = "https://codeberg.org/vellu/rimpiazza"
-repository = "https://codeberg.org/vellu/rimpiazza"
+homepage = "https://github.com/velllu/undici"
+repository = "https://github.com/velllu/undici"
 
 [dependencies]
 x11 = { version = "2.21.0", features = ["xlib"] }
