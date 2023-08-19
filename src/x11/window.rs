@@ -81,6 +81,10 @@ impl Window {
         attributes.into()
     }
 
+    pub fn move_(&self, position: Vector2<i32>) {
+        unsafe { XMoveWindow(self.display, self.id, position.x, position.y) };
+    }
+
     /// Makes window go on top of all other windows. If you are searching for the opposite
     /// thing, see the `lower()` function
     pub fn raise(&self) {

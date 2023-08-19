@@ -1,5 +1,8 @@
 use undici::x11::{
-    common::MouseButton, display::Display, events::event::EventType, window::Modifier,
+    common::{MouseButton, Vector2},
+    display::Display,
+    events::{button::MouseEventData, event::EventType},
+    window::{Modifier, WindowData},
 };
 
 fn main() {
@@ -18,6 +21,9 @@ fn main() {
     root_window.grab_mouse_button(MouseButton::Left, Modifier::Alt);
     root_window.grab_mouse_button(MouseButton::Right, Modifier::Alt);
 
+    let mut attributes: Option<WindowData> = None;
+    let mut start: Option<MouseEventData> = None;
+
     loop {
         let event = display.get_event();
 
@@ -34,9 +40,28 @@ fn main() {
                 }
             }
 
-            // EventType::MouseButtonPress(mouse_event) => if let Some(_window) = event.subwindow {},
+            EventType::MouseButtonPress(mouse_event) => {
+                if let Some(window) = event.subwindow {
+                    attributes = Some(window.get_data());
+                }
 
-            // EventType::MotionNotify(motion_event) => {}
+                start = Some(mouse_event)
+            }
+
+            EventType::MotionNotify(motion_event) => {
+                if let (Some(start), Some(window), Some(attributes)) =
+                    (&start, &event.subwindow, &attributes)
+                {
+                    let x_diff = motion_event.root_position.x - start.root_position.x;
+                    let y_diff = motion_event.root_position.y - start.root_position.y;
+
+                    window.move_(Vector2::new(
+                        attributes.position.x + x_diff,
+                        attributes.position.y + y_diff,
+                    ));
+                }
+            }
+
             _ => {}
         }
     }
