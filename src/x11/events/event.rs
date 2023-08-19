@@ -96,14 +96,6 @@ fn modifier_to_xlib_mod(modifier: Modifier) -> c_uint {
     }
 }
 
-fn mouse_button_to_number(mouse_button: MouseButton) -> c_uint {
-    match mouse_button {
-        MouseButton::Left => 1,
-        MouseButton::Middle => 2,
-        MouseButton::Right => 3,
-    }
-}
-
 impl Window {
     /// Filters X11 key events to a specific key & modifier
     /// # Examples
@@ -149,7 +141,7 @@ impl Window {
         unsafe {
             XGrabButton(
                 self.display,
-                mouse_button_to_number(mouse_button),
+                mouse_button.as_c_uint(),
                 modifier_to_xlib_mod(modifier),
                 self.id,
                 true.into(),

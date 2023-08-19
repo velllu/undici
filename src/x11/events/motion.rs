@@ -8,10 +8,10 @@ pub struct MotionData {
 
 impl From<XEvent> for MotionData {
     fn from(xevent: XEvent) -> Self {
-        let xbutton: XMotionEvent = xevent.into();
+        let xmotion: XMotionEvent = xevent.into();
 
         Self {
-            root_position: Vector2::new(xbutton.x_root, xbutton.y_root),
+            root_position: Vector2::new(xmotion.x_root, xmotion.y_root),
         }
     }
 }
