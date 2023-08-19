@@ -55,7 +55,7 @@ fn main() {
                     let x_diff = motion_event.root_position.x - start.root_position.x;
                     let y_diff = motion_event.root_position.y - start.root_position.y;
 
-                    window.move_(Vector2::new(
+                    window.set_position(Vector2::new(
                         attributes.position.x + x_diff,
                         attributes.position.y + y_diff,
                     ));

@@ -81,7 +81,7 @@ impl Window {
         attributes.into()
     }
 
-    pub fn move_(&self, position: Vector2<i32>) {
+    pub fn set_position(&self, position: Vector2<i32>) {
         unsafe { XMoveWindow(self.display, self.id, position.x, position.y) };
     }
 
