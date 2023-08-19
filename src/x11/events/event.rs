@@ -1,6 +1,6 @@
 use std::ffi::{c_char, c_uint, CString};
 
-use super::{button::MouseEventData, key::KeyEventData};
+use super::{button::MouseEventData, key::KeyEventData, motion::MotionData};
 use crate::x11::{
     common::MouseButton,
     display::Display,
@@ -14,6 +14,7 @@ pub enum EventType {
     KeyRelease(KeyEventData),
     MouseButtonPress(MouseEventData),
     MouseButtonRelease(MouseEventData),
+    MotionNotify(MotionData),
     Unimplemented,
 }
 
