@@ -1,3 +1,5 @@
+//! Rewrite of https://github.com/mackstann/tinywm
+
 use undici::x11::{
     common::{MouseButton, Vector2},
     display::Display,
@@ -18,14 +20,21 @@ fn main() {
     root_window.grab_key("l", Modifier::Alt); // Press Alt + L to put the window on the top
     root_window.grab_key("r", Modifier::Alt); // Press Alt + R to put the window on the bottom
 
+    // Drag while pressing Alt + Left Mouse Button to drag window around
     root_window.grab_mouse_button(MouseButton::Left, Modifier::Alt);
+
+    // Drag while pressing Alt + Right Mouse Button to resize window from the right bottom corner
     root_window.grab_mouse_button(MouseButton::Right, Modifier::Alt);
 
-    let mut attributes: Option<WindowData> = None;
+    // To hold the the mouse/window data once dragging starts
     let mut start: Option<MouseEventData> = None;
+    let mut attributes: Option<WindowData> = None;
 
     loop {
         let event = display.get_event();
+
+        // Later we will use `event.subwindow`, which is None if the user interacts outside of
+        // a window, but is Some(Window) if the user is inside a window
 
         match event.type_ {
             EventType::KeyPress(key_event) => {
