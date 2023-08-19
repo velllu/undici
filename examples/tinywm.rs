@@ -1,5 +1,8 @@
 use undici::x11::{
-    common::MouseButton, display::Display, events::event::EventType, window::Modifier,
+    common::{MouseButton, Vector2},
+    display::Display,
+    events::event::EventType,
+    window::Modifier,
 };
 
 fn main() {
@@ -18,6 +21,8 @@ fn main() {
     root_window.grab_mouse_button(MouseButton::Left, Modifier::Alt);
     root_window.grab_mouse_button(MouseButton::Right, Modifier::Alt);
 
+    let mut mouse_position: Option<Vector2> = None;
+
     loop {
         let event = display.get_event();
 
@@ -34,23 +39,13 @@ fn main() {
                 }
             }
 
-            EventType::KeyRelease(key_event) => {
-                println!("Released key: {}", key_event.key);
+            EventType::MouseButtonPress(mouse_event) => {
+                if let Some(_window) = event.subwindow {
+                    mouse_position = Some(mouse_event.root_position)
+                }
             }
 
-            EventType::MouseButtonPress(mouse_event) => match mouse_event.button {
-                MouseButton::Left => println!("Pressed left mouse btn"),
-                MouseButton::Middle => println!("Pressed middle mouse btn"),
-                MouseButton::Right => println!("Pressed right mouse btn"),
-            },
-
-            EventType::MouseButtonRelease(mouse_event) => match mouse_event.button {
-                MouseButton::Left => println!("Released left mouse btn"),
-                MouseButton::Middle => println!("Released middle mouse btn"),
-                MouseButton::Right => println!("Released right mouse btn"),
-            },
-
-            EventType::Unimplemented => {}
+            _ => {}
         }
     }
 }

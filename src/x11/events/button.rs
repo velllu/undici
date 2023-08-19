@@ -1,9 +1,10 @@
-use crate::x11::common::MouseButton;
+use crate::x11::common::{MouseButton, Vector2};
 use x11::xlib::{XButtonEvent, XEvent};
 
 #[derive(PartialEq)]
 pub struct MouseEventData {
     pub button: MouseButton,
+    pub root_position: Vector2,
 }
 
 impl From<XEvent> for MouseEventData {
@@ -17,6 +18,12 @@ impl From<XEvent> for MouseEventData {
             _ => unimplemented!(),
         };
 
-        Self { button }
+        Self {
+            button,
+            root_position: Vector2 {
+                x: xbutton.x_root,
+                y: xbutton.y_root,
+            },
+        }
     }
 }
