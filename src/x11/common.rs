@@ -6,7 +6,13 @@ pub enum MouseButton {
 }
 
 #[derive(PartialEq)]
-pub struct Vector2 {
-    pub x: i32,
-    pub y: i32,
+pub struct Vector2<T> {
+    pub x: T,
+    pub y: T,
+}
+
+impl<T> Vector2<T> {
+    pub fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
 }

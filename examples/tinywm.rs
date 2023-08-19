@@ -1,8 +1,5 @@
 use undici::x11::{
-    common::{MouseButton, Vector2},
-    display::Display,
-    events::event::EventType,
-    window::Modifier,
+    common::MouseButton, display::Display, events::event::EventType, window::Modifier,
 };
 
 fn main() {
@@ -21,8 +18,6 @@ fn main() {
     root_window.grab_mouse_button(MouseButton::Left, Modifier::Alt);
     root_window.grab_mouse_button(MouseButton::Right, Modifier::Alt);
 
-    let mut starting_mouse_position: Option<Vector2> = None;
-
     loop {
         let event = display.get_event();
 
@@ -39,19 +34,9 @@ fn main() {
                 }
             }
 
-            EventType::MouseButtonPress(mouse_event) => {
-                if let Some(_window) = event.subwindow {
-                    starting_mouse_position = Some(mouse_event.root_position)
-                }
-            }
+            // EventType::MouseButtonPress(mouse_event) => if let Some(_window) = event.subwindow {},
 
-            EventType::MotionNotify(motion_event) => {
-                if let Some(starting_mouse_position) = &starting_mouse_position {
-                    let x_diff = motion_event.root_position.x - starting_mouse_position.x;
-                    let y_diff = motion_event.root_position.y - starting_mouse_position.y;
-                }
-            }
-
+            // EventType::MotionNotify(motion_event) => {}
             _ => {}
         }
     }

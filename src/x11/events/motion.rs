@@ -3,7 +3,7 @@ use x11::xlib::{XEvent, XMotionEvent};
 
 #[derive(PartialEq)]
 pub struct MotionData {
-    pub root_position: Vector2,
+    pub root_position: Vector2<i32>,
 }
 
 impl From<XEvent> for MotionData {
@@ -11,25 +11,7 @@ impl From<XEvent> for MotionData {
         let xbutton: XMotionEvent = xevent.into();
 
         Self {
-            root_position: Vector2 {
-                x: xbutton.x_root,
-                y: xbutton.y_root,
-            },
+            root_position: Vector2::new(xbutton.x_root, xbutton.y_root),
         }
-
-        // let button = match xbutton.button {
-        //     1 => MouseButton::Left,
-        //     2 => MouseButton::Middle,
-        //     3 => MouseButton::Right,
-        //     _ => unimplemented!(),
-        // };
-
-        // Self {
-        //     button,
-        //     root_position: Vector2 {
-        //         x: xbutton.x_root,
-        //         y: xbutton.y_root,
-        //     },
-        // }
     }
 }

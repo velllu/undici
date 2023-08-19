@@ -1,4 +1,4 @@
-use super::window::Window;
+use super::{common::Vector2, window::Window};
 use crate::color::RGB;
 use x11::xlib::{XAllPlanes, XDestroyImage, XGetImage, XGetPixel, XImage, ZPixmap};
 
@@ -28,8 +28,8 @@ impl Image {
     ///     first_pixel.g
     /// );
     /// ```
-    pub fn get_pixel(&self, x: i32, y: i32) -> RGB {
-        let pixel = unsafe { XGetPixel(self.image, x, y) };
+    pub fn get_pixel(&self, position: Vector2<i32>) -> RGB {
+        let pixel = unsafe { XGetPixel(self.image, position.x, position.y) };
 
         RGB {
             r: ((pixel >> 16) & 0xFF) as u8,
@@ -60,8 +60,8 @@ impl Window {
                 self.id,
                 0,
                 0,
-                window_data.width as u32,
-                window_data.height as u32,
+                window_data.size.x as u32,
+                window_data.size.y as u32,
                 XAllPlanes(),
                 ZPixmap,
             )
@@ -69,8 +69,8 @@ impl Window {
 
         Image {
             image,
-            width: window_data.width as u32,
-            height: window_data.height as u32,
+            width: window_data.size.x as u32,
+            height: window_data.size.y as u32,
         }
     }
 }

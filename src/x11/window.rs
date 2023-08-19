@@ -1,3 +1,4 @@
+use super::common::Vector2;
 use std::ptr::null_mut;
 use x11::xlib::*;
 
@@ -12,10 +13,8 @@ pub enum Modifier {
 }
 
 pub struct WindowData {
-    pub x: i32,
-    pub y: i32,
-    pub width: i32,
-    pub height: i32,
+    pub position: Vector2<i32>,
+    pub size: Vector2<i32>,
 }
 
 /// We need a default window attributes const because the XGetWindowAttributes requires a
@@ -98,10 +97,8 @@ impl Window {
 impl From<XWindowAttributes> for WindowData {
     fn from(attributes: XWindowAttributes) -> Self {
         WindowData {
-            x: attributes.x,
-            y: attributes.y,
-            width: attributes.width,
-            height: attributes.height,
+            position: Vector2::new(attributes.x, attributes.y),
+            size: Vector2::new(attributes.width, attributes.height),
         }
     }
 }

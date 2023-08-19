@@ -4,7 +4,7 @@ use x11::xlib::{XButtonEvent, XEvent};
 #[derive(PartialEq)]
 pub struct MouseEventData {
     pub button: MouseButton,
-    pub root_position: Vector2,
+    pub root_position: Vector2<i32>,
 }
 
 impl From<XEvent> for MouseEventData {
@@ -20,10 +20,7 @@ impl From<XEvent> for MouseEventData {
 
         Self {
             button,
-            root_position: Vector2 {
-                x: xbutton.x_root,
-                y: xbutton.y_root,
-            },
+            root_position: Vector2::new(xbutton.x_root, xbutton.y_root),
         }
     }
 }

@@ -1,7 +1,7 @@
 //! Prints the average color of the screen
 
 use std::time::Instant;
-use undici::x11::{display::Display, window::kill_window};
+use undici::x11::{common::Vector2, display::Display, window::kill_window};
 
 fn main() {
     let starting_time = Instant::now();
@@ -17,7 +17,7 @@ fn main() {
 
     for x in 0..screenshot.width {
         for y in 0..screenshot.height {
-            let pixel = screenshot.get_pixel(x as i32, y as i32);
+            let pixel = screenshot.get_pixel(Vector2::new(x as i32, y as i32));
 
             r += pixel.r as u32;
             g += pixel.g as u32;
