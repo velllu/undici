@@ -52,6 +52,7 @@ impl Event {
             KeyRelease => EventType::KeyRelease(self.event.into()),
             ButtonPress => EventType::MouseButtonPress(self.event.into()),
             ButtonRelease => EventType::MouseButtonRelease(self.event.into()),
+            MotionNotify => EventType::MotionNotify(self.event.into()),
             _ => EventType::Unimplemented,
         };
 
