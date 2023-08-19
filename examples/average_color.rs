@@ -1,13 +1,14 @@
 //! Prints the average color of the screen
 
 use std::time::Instant;
-use undici::x11::display::Display;
+use undici::x11::{display::Display, window::kill_window};
 
 fn main() {
     let starting_time = Instant::now();
 
     let display = Display::new().expect("could not open display");
-    let root_window = display.get_root_window();
+    let mut root_window = display.get_root_window();
+
     let screenshot = root_window.get_image();
 
     let starting_calculation_time = Instant::now();
@@ -28,6 +29,8 @@ fn main() {
     let r = (r as u32 / total_pixels) as u8;
     let g = (g as u32 / total_pixels) as u8;
     let b = (b as u32 / total_pixels) as u8;
+
+    kill_window(&mut root_window);
 
     println!("Average screen color: #{:x}{:x}{:x}", r, g, b);
     println!("");

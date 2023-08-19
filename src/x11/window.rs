@@ -46,6 +46,14 @@ const NEW_WINDOW_ATTRIBUTES: XWindowAttributes = XWindowAttributes {
     screen: null_mut(),
 };
 
+/// Autoexplicative enough right?
+pub fn kill_window(window: &mut Window) {
+    unsafe { XDestroyWindow(window.display, window.id) };
+}
+
+/// # Warning
+/// If this is not used in a loop (for example, a wm), you need to manually kill the
+/// window with the `kill_window(&mut window)` function
 pub struct Window {
     // To identify a `Window` we need but it's `id` and the `display` where the window
     // lives
