@@ -58,7 +58,7 @@ impl Window {
     /// ```
     /// use undici::x11::display::Display;
     ///
-    /// let display = Display::new()
+    /// let display = Display::new()tar
     ///     .expect("Hopefully there are no errors!");
     ///
     /// let data = display.get_root_window().get_data();
@@ -72,6 +72,18 @@ impl Window {
         unsafe { XGetWindowAttributes(self.display, self.id, &mut attributes) };
 
         attributes.into()
+    }
+
+    /// Makes window go on top of all other windows. If you are searching for the opposite
+    /// thing, see the `lower()` function
+    pub fn raise(&self) {
+        unsafe { XRaiseWindow(self.display, self.id) };
+    }
+
+    /// Makes window go on the bottom of all other windows. If you are searching for the
+    /// opposite thing, see the `raise()` function
+    pub fn lower(&self) {
+        unsafe { XLowerWindow(self.display, self.id) };
     }
 }
 
