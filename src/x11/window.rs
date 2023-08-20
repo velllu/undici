@@ -81,6 +81,10 @@ impl Window {
         attributes.into()
     }
 
+    pub fn set_cursor_position(&self, position: Vector2<i32>) {
+        unsafe { XWarpPointer(self.display, 0, self.id, 0, 0, 0, 0, position.x, position.y) };
+    }
+
     pub fn set_position(&self, position: Vector2<i32>) {
         unsafe { XMoveWindow(self.display, self.id, position.x, position.y) };
     }
