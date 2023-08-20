@@ -65,24 +65,20 @@ impl Window {
     /// ```
     /// use undici::x11::display::Display;
     ///
-    /// let display = Display::new()tar
+    /// let display = Display::new()
     ///     .expect("Hopefully there are no errors!");
     ///
     /// let data = display.get_root_window().get_data();
     ///
-    /// println!("Your monitor resolution is {}x{}", data.width, data.height);
-    /// assert_eq!(0, data.x); // The root window should always be fixed on the top right
-    /// assert_eq!(0, data.y);
+    /// println!("Your monitor resolution is {}x{}", data.scale.x, data.scale.y);
+    /// assert_eq!(0, data.position.x); // The root window should always be fixed on the top right
+    /// assert_eq!(0, data.position.y);
     /// ```
     pub fn get_data(&self) -> WindowData {
         let mut attributes = NEW_WINDOW_ATTRIBUTES;
         unsafe { XGetWindowAttributes(self.display, self.id, &mut attributes) };
 
         attributes.into()
-    }
-
-    pub fn set_cursor_position(&self, position: Vector2<i32>) {
-        unsafe { XWarpPointer(self.display, 0, self.id, 0, 0, 0, 0, position.x, position.y) };
     }
 
     pub fn set_position(&self, position: Vector2<i32>) {

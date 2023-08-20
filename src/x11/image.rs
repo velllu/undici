@@ -14,12 +14,13 @@ impl Image {
     /// # Examples
     /// ```
     /// use undici::x11::display::Display;
+    /// use undici::x11::common::Vector2;
     ///
     /// let display = Display::new().unwrap();
     /// let root_window = display.get_root_window();
     ///
     /// let screenshot = root_window.get_image();
-    /// let first_pixel = screenshot.get_pixel(0, 0);
+    /// let first_pixel = screenshot.get_pixel(Vector2::new(0, 0));
     ///
     /// println!(
     ///     "First pixel color: #{:x}{:x}{:x}",

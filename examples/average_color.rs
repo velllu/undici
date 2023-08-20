@@ -9,6 +9,10 @@ fn main() {
     let display = Display::new().expect("could not open display");
     let mut root_window = display.get_root_window();
 
+    root_window.set_cursor_position(Vector2::new(0, 0));
+    let pos = root_window.get_cursor_position();
+    println!("{}", pos.x);
+
     let screenshot = root_window.get_image();
 
     let starting_calculation_time = Instant::now();
