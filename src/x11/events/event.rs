@@ -1,6 +1,8 @@
 use std::ffi::{c_char, c_uint, CString};
 
-use super::{button::MouseEventData, key::KeyEventData, motion::MotionData};
+use super::{
+    button::MouseEventData, create::WindowCreateData, key::KeyEventData, motion::MotionData,
+};
 use crate::x11::{
     common::MouseButton,
     display::Display,
@@ -15,6 +17,7 @@ pub enum EventType {
     MouseButtonPress(MouseEventData),
     MouseButtonRelease(MouseEventData),
     MotionNotify(MotionData),
+    WindowCreated(WindowCreateData),
     Unimplemented,
 }
 
@@ -53,6 +56,7 @@ impl Event {
             ButtonPress => EventType::MouseButtonPress(self.event.into()),
             ButtonRelease => EventType::MouseButtonRelease(self.event.into()),
             MotionNotify => EventType::MotionNotify(self.event.into()),
+            CreateNotify => EventType::WindowCreated(self.event.into()),
             _ => EventType::Unimplemented,
         };
 
