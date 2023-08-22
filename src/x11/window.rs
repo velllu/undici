@@ -1,5 +1,8 @@
 use super::common::Vector2;
-use std::ptr::null_mut;
+use std::{
+    ffi::{c_char, CStr},
+    ptr::null_mut,
+};
 use x11::xlib::*;
 
 pub enum Modifier {
@@ -80,6 +83,24 @@ impl Window {
         unsafe { XGetWindowAttributes(self.display, self.id, &mut attributes) };
 
         attributes.into()
+    }
+
+    // TODO: Add test
+    pub fn get_name(&self) -> Option<String> {
+        unsafe {
+            let mut name: *mut c_char = std::ptr::null_mut();
+            XFetchName(self.display, self.id, &mut name);
+
+            if !name.is_null() {
+                let name_cst = CStr::from_ptr(name);
+                let name_str = name_cst.to_string_lossy().into_owned();
+                XFree(name as *mut std::ffi::c_void);
+
+                return Some(name_str);
+            }
+
+            None
+        }
     }
 
     pub fn set_position(&self, position: Vector2<i32>) {

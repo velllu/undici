@@ -1,7 +1,10 @@
 use std::ffi::{c_char, c_uint, CString};
 
 use super::{
-    button::MouseEventData, create::WindowCreateData, key::KeyEventData, motion::MotionData,
+    button::MouseEventData,
+    create::{xevent_to_window_create_data, WindowCreateData},
+    key::KeyEventData,
+    motion::MotionData,
 };
 use crate::x11::{
     common::MouseButton,
@@ -17,7 +20,10 @@ pub enum EventType {
     MouseButtonPress(MouseEventData),
     MouseButtonRelease(MouseEventData),
     MotionNotify(MotionData),
+
+    /// This will only work if you called the `Window.grab_children_substucture` function
     WindowCreated(WindowCreateData),
+
     Unimplemented,
 }
 
@@ -56,7 +62,10 @@ impl Event {
             ButtonPress => EventType::MouseButtonPress(self.event.into()),
             ButtonRelease => EventType::MouseButtonRelease(self.event.into()),
             MotionNotify => EventType::MotionNotify(self.event.into()),
-            CreateNotify => EventType::WindowCreated(self.event.into()),
+
+            // Check `xevent_to_window_create_data()` comment for why this is here
+            CreateNotify => xevent_to_window_create_data(self.event),
+
             _ => EventType::Unimplemented,
         };
 
@@ -156,5 +165,10 @@ impl Window {
                 0,
             )
         };
+    }
+
+    /// Listen for window creation events
+    pub fn grab_children_substucture(&self) {
+        unsafe { XSelectInput(self.display, self.id, SubstructureNotifyMask) };
     }
 }
