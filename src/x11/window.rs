@@ -56,7 +56,7 @@ pub fn kill_window(window: &mut Window) {
 /// # Warning
 /// If this is not used in a loop (for example, a wm), you need to manually kill the
 /// window with the `kill_window(&mut window)` function
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy)]
 pub struct Window {
     // To identify a `Window` we need but it's `id` and the `display` where the window
     // lives

@@ -1,5 +1,3 @@
-use std::ffi::{c_char, c_uint, CString};
-
 use super::{
     button::MouseEventData,
     create::{xevent_to_window_create_data, WindowCreateData},
@@ -11,6 +9,7 @@ use crate::x11::{
     display::Display,
     window::{Modifier, Window},
 };
+use std::ffi::{c_char, c_uint, CString};
 use x11::xlib::*;
 
 #[derive(PartialEq)]
