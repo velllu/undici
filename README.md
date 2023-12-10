@@ -1,2 +1,2 @@
-# This bindings are made just for my projects, I won't add features I don't need!
-![funny af meme](meme.jpg)
+# I probably won't continue this
+look into porcignown's source code on my profile to see why
